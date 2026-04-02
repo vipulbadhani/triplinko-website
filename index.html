@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TripLinko - Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#56CCF2; --bg2:#2F80ED; --card:rgba(255,255,255,0.15); --text:#ffffff; --accent:#FF8A00;
+    }
+
+    body.dark{
+      --bg1:#0f172a; --bg2:#1e293b; --card:rgba(255,255,255,0.08); --text:#e2e8f0;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .container {
+      padding: 40px 20px;
+      max-width: 550px;
+      margin: auto;
+    }
+
+    .top-bar{
+      display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;
+    }
+
+    .toggle{
+      cursor:pointer; background:var(--card); padding:6px 12px; border-radius:20px; font-size:12px;
+    }
+
+    .logo {
+      font-size: 42px;
+      font-weight: 600;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .logo-img{
+      width:80px; margin: 10px auto;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100%{ transform: translateY(0);} 
+      50%{ transform: translateY(-10px);} 
+    }
+
+    h1 { margin: 10px 0; font-size: 30px; }
+
+    p { font-size: 16px; opacity: 0.9; }
+
+    .email-box {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    input {
+      padding: 12px;
+      border-radius: 25px 0 0 25px;
+      border: none;
+      width: 60%;
+      outline: none;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      border-radius: 0 25px 25px 0;
+      cursor: pointer;
+    }
+
+    button:hover { background: #e67600; }
+
+    .section { margin-top: 40px; }
+
+    .features {
+      display: grid;
+      gap: 15px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 15px;
+      border-radius: 15px;
+    }
+
+    .store-buttons { margin-top: 20px; }
+
+    .store-buttons button {
+      margin: 5px;
+      border-radius: 25px;
+    }
+
+    .car {
+      font-size: 30px;
+      margin-top: 15px;
+      animation: move 4s linear infinite;
+    }
+
+    @keyframes move {
+      0%{ transform: translateX(-50px);} 
+      100%{ transform: translateX(50px);} 
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 12px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="top-bar">
+      <div></div>
+      <div class="toggle" onclick="toggleMode()">🌙 Mode</div>
+    </div>
+
+    <!-- Logo Image (replace src with your logo) -->
+    <img src="logo.png" alt="TripLinko Logo" class="logo-img" />
+
+    <div class="logo">Trip<span>Linko</span></div>
+    <h1>Coming Soon 🚀</h1>
+    <p>Link Trips. Share Rides.<br>Your smart carpooling app is launching soon.</p>
+
+    <!-- Animated Car -->
+    <div class="car">🚗</div>
+
+    <!-- Email Form (Web3Forms Ready) -->
+    <form action="https://api.web3forms.com/submit" method="POST" class="email-box">
+      <input type="hidden" name="access_key" value="58b69fbd-7d3f-436b-9209-6f5d5e11d6fb">
+      <input type="email" name="email" placeholder="Enter your email" required />
+      <button type="submit">Notify</button>
+    </form>
+
+    <!-- App Buttons -->
+    <div class="store-buttons">
+      <button>Google Play</button>
+      <button>App Store</button>
+    </div>
+
+    <!-- Features -->
+    <div class="section">
+      <h2>Why TripLinko?</h2>
+      <div class="features">
+        <div class="card">🚗 Share rides and save money</div>
+        <div class="card">👥 Connect with nearby travelers</div>
+        <div class="card">⚡ Fast & easy booking</div>
+      </div>
+    </div>
+
+    <div class="footer">© 2026 TripLinko. All rights reserved.</div>
+  </div>
+
+  <script>
+    function toggleMode(){
+      document.body.classList.toggle('dark');
+    }
+  </script>
+</body>
+</html>
