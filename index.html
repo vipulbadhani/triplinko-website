@@ -1,175 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TripLinko - Coming Soon</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triplinko — Smarter Carpooling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  <style>
-    :root{
-      --bg1:#56CCF2; --bg2:#2F80ED; --card:rgba(255,255,255,0.15); --text:#ffffff; --accent:#FF8A00;
-    }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #F0F5FF;
+    color: #0D1B3E;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-    body.dark{
-      --bg1:#0f172a; --bg2:#1e293b; --card:rgba(255,255,255,0.08); --text:#e2e8f0;
-    }
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: linear-gradient(160deg, #EEF4FF 0%, #F7F0FF 50%, #E8FBF7 100%);
+  }
+  .blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); opacity: 0.5;
+  }
+  .blob1 { width:500px; height:500px; background:#C7D9FF; top:-100px; left:-80px; animation: b1 20s ease-in-out infinite; }
+  .blob2 { width:400px; height:400px; background:#CCF7EE; bottom:-80px; right:-60px; animation: b2 25s ease-in-out infinite; }
+  .blob3 { width:300px; height:300px; background:#DDD0FF; top:40%; left:55%; animation: b3 18s ease-in-out infinite; }
 
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2));
-      color: var(--text);
-      text-align: center;
-      transition: 0.3s;
-    }
+  @keyframes b1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,30px)} }
+  @keyframes b2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,-20px)} }
+  @keyframes b3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.2)} }
 
-    .container {
-      padding: 40px 20px;
-      max-width: 550px;
-      margin: auto;
-    }
+  .page {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px 24px 80px;
+    text-align: center;
+  }
 
-    .top-bar{
-      display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;
-    }
+  .logo-area {
+    margin-bottom: 36px;
+    opacity: 0; animation: up 0.7s 0.1s ease forwards;
+  }
+  .logo-icon {
+    width: 88px; height: 88px;
+    background: linear-gradient(135deg, #1A5CFF, #00C9A0);
+    border-radius: 26px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 12px 40px rgba(26,92,255,0.3), 0 0 0 1px rgba(26,92,255,0.15);
+  }
+  .logo-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 30px; font-weight: 800;
+    color: #0D1B3E;
+    letter-spacing: -0.5px;
+  }
+  .logo-name span { color: #1A5CFF; }
 
-    .toggle{
-      cursor:pointer; background:var(--card); padding:6px 12px; border-radius:20px; font-size:12px;
-    }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white;
+    border: 1.5px solid #D6E4FF;
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: #1A5CFF;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(26,92,255,0.1);
+    opacity: 0; animation: up 0.7s 0.25s ease forwards;
+  }
+  .badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #00C9A0;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
 
-    .logo {
-      font-size: 42px;
-      font-weight: 600;
-    }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(42px, 8vw, 80px);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -2.5px;
+    color: #0D1B3E;
+    margin-bottom: 22px;
+    opacity: 0; animation: up 0.7s 0.35s ease forwards;
+  }
+  h1 .accent {
+    background: linear-gradient(135deg, #1A5CFF 0%, #00C9A0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-    .logo span { color: var(--accent); }
+  .sub {
+    font-size: clamp(15px, 2.5vw, 18px);
+    font-weight: 400;
+    color: #4A5878;
+    max-width: 460px;
+    line-height: 1.75;
+    margin-bottom: 44px;
+    opacity: 0; animation: up 0.7s 0.45s ease forwards;
+  }
 
-    .logo-img{
-      width:80px; margin: 10px auto;
-      animation: float 3s ease-in-out infinite;
-    }
+  .form-wrap {
+    width: 100%; max-width: 460px;
+    margin-bottom: 56px;
+    opacity: 0; animation: up 0.7s 0.55s ease forwards;
+  }
+  .form-box {
+    display: flex; gap: 0;
+    background: white;
+    border: 1.5px solid #D6E4FF;
+    border-radius: 18px;
+    padding: 6px 6px 6px 20px;
+    box-shadow: 0 4px 24px rgba(26,92,255,0.08);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .form-box:focus-within {
+    border-color: #1A5CFF;
+    box-shadow: 0 4px 24px rgba(26,92,255,0.18);
+  }
+  .form-box input {
+    flex: 1; border: none; outline: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px; font-weight: 400;
+    color: #0D1B3E; background: transparent;
+    padding: 10px 0;
+  }
+  .form-box input::placeholder { color: #9BAAC5; }
+  .form-btn {
+    background: linear-gradient(135deg, #1A5CFF, #0040CC);
+    border: none; border-radius: 13px;
+    padding: 13px 24px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 700;
+    color: white; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+  .form-btn:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(26,92,255,0.4); }
+  .form-btn:active { transform: scale(0.97); }
 
-    @keyframes float {
-      0%,100%{ transform: translateY(0);} 
-      50%{ transform: translateY(-10px);} 
-    }
+  .form-note { margin-top: 12px; font-size: 12.5px; color: #8A9BBB; font-weight: 500; }
 
-    h1 { margin: 10px 0; font-size: 30px; }
+  .success {
+    display: none; margin-top: 14px;
+    background: #E6FBF5; border: 1.5px solid #00C9A0;
+    border-radius: 12px; padding: 12px 18px;
+    font-size: 14px; font-weight: 600; color: #007A60;
+  }
 
-    p { font-size: 16px; opacity: 0.9; }
+  .pills {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    max-width: 600px; margin-bottom: 44px;
+    opacity: 0; animation: up 0.7s 0.65s ease forwards;
+  }
+  .pill {
+    display: flex; align-items: center; gap: 7px;
+    background: white; border: 1.5px solid #E2EAFF;
+    border-radius: 100px; padding: 9px 18px;
+    font-size: 13.5px; font-weight: 600; color: #2A3A5C;
+    box-shadow: 0 2px 8px rgba(26,92,255,0.06);
+    transition: transform 0.2s, box-shadow 0.2s; cursor: default;
+  }
+  .pill:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,92,255,0.12); }
 
-    .email-box {
-      margin-top: 20px;
-      display: flex;
-      justify-content: center;
-    }
+  .countries {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: up 0.7s 0.75s ease forwards;
+  }
+  .countries-lbl {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; color: #8A9BBB;
+  }
+  .flags { display: flex; gap: 10px; }
+  .flag { font-size: 24px; transition: transform 0.2s; cursor: default; }
+  .flag:hover { transform: scale(1.25) rotate(-5deg); }
 
-    input {
-      padding: 12px;
-      border-radius: 25px 0 0 25px;
-      border: none;
-      width: 60%;
-      outline: none;
-    }
+  footer {
+    position: fixed; bottom: 20px; width: 100%; text-align: center;
+    font-size: 12px; color: #9BAAC5; font-weight: 500;
+  }
 
-    button {
-      padding: 12px 20px;
-      border: none;
-      background: var(--accent);
-      color: white;
-      border-radius: 0 25px 25px 0;
-      cursor: pointer;
-    }
+  .car { position: fixed; font-size: 22px; opacity: 0.12; pointer-events: none; animation: drive linear infinite; }
+  .c1 { bottom: 18%; animation-duration: 28s; animation-delay: 0s; }
+  .c2 { bottom: 40%; animation-duration: 40s; animation-delay: -15s; font-size: 16px; }
+  .c3 { bottom: 65%; animation-duration: 50s; animation-delay: -30s; font-size: 14px; }
 
-    button:hover { background: #e67600; }
+  @keyframes drive { from{left:-60px} to{left:calc(100vw + 60px)} }
+  @keyframes up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.75)} }
 
-    .section { margin-top: 40px; }
-
-    .features {
-      display: grid;
-      gap: 15px;
-    }
-
-    .card {
-      background: var(--card);
-      padding: 15px;
-      border-radius: 15px;
-    }
-
-    .store-buttons { margin-top: 20px; }
-
-    .store-buttons button {
-      margin: 5px;
-      border-radius: 25px;
-    }
-
-    .car {
-      font-size: 30px;
-      margin-top: 15px;
-      animation: move 4s linear infinite;
-    }
-
-    @keyframes move {
-      0%{ transform: translateX(-50px);} 
-      100%{ transform: translateX(50px);} 
-    }
-
-    .footer {
-      margin-top: 40px;
-      font-size: 12px;
-      opacity: 0.8;
-    }
-  </style>
+  @media(max-width:480px){
+    .form-box { flex-direction:column; padding:12px; gap:10px; }
+    .form-btn { width:100%; padding:15px; text-align:center; }
+  }
+</style>
 </head>
 <body>
-  <div class="container">
 
-    <div class="top-bar">
-      <div></div>
-      <div class="toggle" onclick="toggleMode()">🌙 Mode</div>
+<div class="bg">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+</div>
+
+<div class="car c1">🚗</div>
+<div class="car c2">🏍️</div>
+<div class="car c3">🚙</div>
+
+<div class="page">
+
+  <div class="logo-area">
+    <div class="logo-icon">
+      <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+        <path d="M7 36 Q26 16 45 36" stroke="rgba(255,255,255,0.4)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <rect x="14" y="20" width="24" height="14" rx="5" fill="white"/>
+        <path d="M17 20 L20 12 L32 12 L35 20Z" fill="white" opacity="0.9"/>
+        <rect x="20" y="13" width="5" height="6" rx="2" fill="#1A5CFF"/>
+        <rect x="27" y="13" width="5" height="6" rx="2" fill="#1A5CFF"/>
+        <circle cx="20" cy="34" r="4" fill="#0D1B3E"/>
+        <circle cx="20" cy="34" r="2" fill="white" opacity="0.8"/>
+        <circle cx="32" cy="34" r="4" fill="#0D1B3E"/>
+        <circle cx="32" cy="34" r="2" fill="white" opacity="0.8"/>
+        <line x1="5" y1="23" x2="11" y2="23" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="4" y1="28" x2="10" y2="28" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
     </div>
-
-    <!-- Logo Image (replace src with your logo) -->
-    <img src="logo.png" alt="TripLinko Logo" class="logo-img" />
-
-    <div class="logo">Trip<span>Linko</span></div>
-    <h1>Coming Soon 🚀</h1>
-    <p>Link Trips. Share Rides.<br>Your smart carpooling app is launching soon.</p>
-
-    <!-- Animated Car -->
-    <div class="car">🚗</div>
-
-    <!-- Email Form (Web3Forms Ready) -->
-    <form action="https://api.web3forms.com/submit" method="POST" class="email-box">
-      <input type="hidden" name="access_key" value="58b69fbd-7d3f-436b-9209-6f5d5e11d6fb">
-      <input type="email" name="email" placeholder="Enter your email" required />
-      <button type="submit">Notify</button>
-    </form>
-
-    <!-- App Buttons -->
-    <div class="store-buttons">
-      <button>Google Play</button>
-      <button>App Store</button>
-    </div>
-
-    <!-- Features -->
-    <div class="section">
-      <h2>Why TripLinko?</h2>
-      <div class="features">
-        <div class="card">🚗 Share rides and save money</div>
-        <div class="card">👥 Connect with nearby travelers</div>
-        <div class="card">⚡ Fast & easy booking</div>
-      </div>
-    </div>
-
-    <div class="footer">© 2026 TripLinko. All rights reserved.</div>
+    <div class="logo-name">Trip<span>linko</span></div>
   </div>
 
-  <script>
-    function toggleMode(){
-      document.body.classList.toggle('dark');
-    }
-  </script>
+  <div class="badge"><div class="badge-dot"></div>Launching Soon</div>
+
+  <h1>Smarter rides,<br><span class="accent">better journeys.</span></h1>
+
+  <p class="sub">
+    Triplinko connects drivers and passengers for shared rides across multiple countries.
+    Save money, meet people, travel smarter.
+  </p>
+
+  <div class="form-wrap">
+    <div class="form-box">
+      <input type="email" id="em" placeholder="Your email address" />
+      <button class="form-btn" onclick="sub()">Get Early Access →</button>
+    </div>
+    <p class="form-note">🔒 No spam. Launch notification only.</p>
+    <div class="success" id="ok">🎉 You're on the list! We'll notify you at launch.</div>
+  </div>
+
+  <div class="pills">
+    <div class="pill">🗺️ GPS Route Match</div>
+    <div class="pill">💺 Pick Your Seat</div>
+    <div class="pill">💬 In-App Chat</div>
+    <div class="pill">💳 Wallet & Cash</div>
+    <div class="pill">⭐ Verified Drivers</div>
+    <div class="pill">📱 Android App</div>
+  </div>
+
+  <div class="countries">
+    <span class="countries-lbl">Launching in</span>
+    <div class="flags">
+      <span class="flag" title="India">🇮🇳</span>
+      <span class="flag" title="Ghana">🇬🇭</span>
+      <span class="flag" title="Nigeria">🇳🇬</span>
+      <span class="flag" title="Kenya">🇰🇪</span>
+      <span class="flag" title="South Africa">🇿🇦</span>
+      <span class="flag" title="United Kingdom">🇬🇧</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2025 Triplinko · triplinko.com</footer>
+
+<script>
+function sub() {
+  const em = document.getElementById('em');
+  const ok = document.getElementById('ok');
+  if (!em.value.trim() || !em.value.includes('@') || !em.value.includes('.')) {
+    em.style.outline = '2px solid #FF4D4D';
+    em.focus();
+    setTimeout(() => em.style.outline = 'none', 2000);
+    return;
+  }
+  ok.style.display = 'block';
+  em.value = '';
+  em.placeholder = 'You\'re in! 🎉';
+  em.disabled = true;
+  document.querySelector('.form-btn').disabled = true;
+  document.querySelector('.form-btn').style.opacity = '0.5';
+}
+document.getElementById('em').addEventListener('keydown', e => { if(e.key==='Enter') sub(); });
+</script>
 </body>
 </html>
