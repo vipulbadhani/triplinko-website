@@ -162,26 +162,23 @@
     opacity: 0; animation: up 0.7s 0.65s ease forwards;
   }
   .pill {
-    display: flex; align-items: center; gap: 7px;
-    background: white; border: 1.5px solid #E2EAFF;
-    border-radius: 100px; padding: 9px 18px;
-    font-size: 13.5px; font-weight: 600; color: #2A3A5C;
-    box-shadow: 0 2px 8px rgba(26,92,255,0.06);
-    transition: transform 0.2s, box-shadow 0.2s; cursor: default;
+    display: flex; align-items: center; gap: 9px;
+    background: white; border: 2px solid #C8D8FF;
+    border-radius: 100px; padding: 12px 22px;
+    font-size: 15px; font-weight: 700; color: #1A2E5A;
+    box-shadow: 0 4px 16px rgba(26,92,255,0.12);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; cursor: default;
+    letter-spacing: -0.1px;
   }
-  .pill:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,92,255,0.12); }
+  .pill .pi { font-size: 20px; }
+  .pill:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(26,92,255,0.18);
+    border-color: #1A5CFF;
+    color: #1A5CFF;
+  }
 
-  .countries {
-    display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center;
-    opacity: 0; animation: up 0.7s 0.75s ease forwards;
-  }
-  .countries-lbl {
-    font-size: 12px; font-weight: 600;
-    letter-spacing: 1px; text-transform: uppercase; color: #8A9BBB;
-  }
-  .flags { display: flex; gap: 10px; }
-  .flag { font-size: 24px; transition: transform 0.2s; cursor: default; }
-  .flag:hover { transform: scale(1.25) rotate(-5deg); }
+
 
   footer {
     position: fixed; bottom: 20px; width: 100%; text-align: center;
@@ -197,6 +194,61 @@
   @keyframes up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.75)} }
 
+
+  /* Store section */
+  .store-section {
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    opacity: 0; animation: up 0.7s 0.75s ease forwards;
+  }
+  .store-label {
+    font-size: 13px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; color: #8A9BBB;
+    margin-bottom: -8px;
+  }
+  .store-btns {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+  }
+  .store-btn {
+    display: flex; align-items: center; gap: 14px;
+    background: #0D1B3E;
+    border: 2px solid #1A2E5A;
+    border-radius: 18px;
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    min-width: 200px;
+    box-shadow: 0 4px 20px rgba(13,27,62,0.15);
+  }
+  .store-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(13,27,62,0.25);
+    border-color: #1A5CFF;
+  }
+  .store-text {
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .store-sub {
+    font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.6);
+    letter-spacing: 0.3px;
+  }
+  .store-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 19px; font-weight: 700; color: white;
+    letter-spacing: -0.3px; line-height: 1.1;
+  }
+  .countries-row {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center;
+    margin-top: 8px;
+  }
+  .countries-lbl { font-size:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#8A9BBB; }
+  .flags { display:flex; gap:10px; }
+  .flag { font-size:24px; transition:transform 0.2s; cursor:default; }
+  .flag:hover { transform:scale(1.25) rotate(-5deg); }
+
+  @media(max-width:480px){
+    .store-btn { min-width: 160px; padding: 12px 20px; }
+    .store-name { font-size: 16px; }
+  }
   @media(max-width:480px){
     .form-box { flex-direction:column; padding:12px; gap:10px; }
     .form-btn { width:100%; padding:15px; text-align:center; }
@@ -219,18 +271,62 @@
 
   <div class="logo-area">
     <div class="logo-icon">
-      <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-        <path d="M7 36 Q26 16 45 36" stroke="rgba(255,255,255,0.4)" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <rect x="14" y="20" width="24" height="14" rx="5" fill="white"/>
-        <path d="M17 20 L20 12 L32 12 L35 20Z" fill="white" opacity="0.9"/>
-        <rect x="20" y="13" width="5" height="6" rx="2" fill="#1A5CFF"/>
-        <rect x="27" y="13" width="5" height="6" rx="2" fill="#1A5CFF"/>
-        <circle cx="20" cy="34" r="4" fill="#0D1B3E"/>
-        <circle cx="20" cy="34" r="2" fill="white" opacity="0.8"/>
-        <circle cx="32" cy="34" r="4" fill="#0D1B3E"/>
-        <circle cx="32" cy="34" r="2" fill="white" opacity="0.8"/>
-        <line x1="5" y1="23" x2="11" y2="23" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="4" y1="28" x2="10" y2="28" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"/>
+      <svg width="72" height="72" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="cg" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#FFFFFF"/>
+            <stop offset="100%" style="stop-color:#E8F4FF"/>
+          </linearGradient>
+          <filter id="sh">
+            <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0A0F1E" flood-opacity="0.25"/>
+          </filter>
+        </defs>
+        <!-- Road arc -->
+        <path d="M 80 360 Q 256 180 432 360" stroke="rgba(255,255,255,0.3)" stroke-width="22" fill="none" stroke-linecap="round"/>
+        <!-- Road dashes -->
+        <path d="M 156 308 Q 216 248 256 234" stroke="rgba(255,255,255,0.18)" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="20 16"/>
+        <path d="M 256 234 Q 296 220 358 272" stroke="rgba(255,255,255,0.18)" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="20 16"/>
+        <!-- Car body -->
+        <rect x="168" y="220" width="176" height="100" rx="22" fill="url(#cg)" filter="url(#sh)"/>
+        <!-- Car roof -->
+        <path d="M 196 220 L 210 148 L 302 148 L 316 220 Z" fill="url(#cg)" filter="url(#sh)"/>
+        <!-- Windows -->
+        <path d="M 302 220 L 292 160 L 266 160 L 266 220 Z" fill="#1B6FEB" opacity="0.85"/>
+        <path d="M 210 220 L 214 160 L 246 160 L 246 220 Z" fill="#1B6FEB" opacity="0.85"/>
+        <line x1="256" y1="155" x2="256" y2="220" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+        <!-- Mirrors -->
+        <rect x="148" y="238" width="20" height="12" rx="4" fill="white" opacity="0.6"/>
+        <rect x="344" y="238" width="20" height="12" rx="4" fill="white" opacity="0.6"/>
+        <!-- Wheel left -->
+        <circle cx="214" cy="322" r="34" fill="#0A2050"/>
+        <circle cx="214" cy="322" r="20" fill="#1B3070"/>
+        <circle cx="214" cy="322" r="10" fill="rgba(255,255,255,0.9)"/>
+        <line x1="214" y1="302" x2="214" y2="342" stroke="rgba(255,255,255,0.4)" stroke-width="3"/>
+        <line x1="194" y1="322" x2="234" y2="322" stroke="rgba(255,255,255,0.4)" stroke-width="3"/>
+        <!-- Wheel right -->
+        <circle cx="298" cy="322" r="34" fill="#0A2050"/>
+        <circle cx="298" cy="322" r="20" fill="#1B3070"/>
+        <circle cx="298" cy="322" r="10" fill="rgba(255,255,255,0.9)"/>
+        <line x1="298" y1="302" x2="298" y2="342" stroke="rgba(255,255,255,0.4)" stroke-width="3"/>
+        <line x1="278" y1="322" x2="318" y2="322" stroke="rgba(255,255,255,0.4)" stroke-width="3"/>
+        <!-- Headlight -->
+        <ellipse cx="344" cy="280" rx="12" ry="8" fill="#FFD700" opacity="0.9"/>
+        <ellipse cx="344" cy="280" rx="7" ry="5" fill="#FFF"/>
+        <!-- Tail light -->
+        <ellipse cx="168" cy="280" rx="10" ry="7" fill="#FF4444" opacity="0.8"/>
+        <!-- Speed lines -->
+        <line x1="80" y1="245" x2="130" y2="245" stroke="rgba(255,255,255,0.4)" stroke-width="6" stroke-linecap="round"/>
+        <line x1="68" y1="268" x2="125" y2="268" stroke="rgba(255,255,255,0.25)" stroke-width="4" stroke-linecap="round"/>
+        <!-- Passenger pin (white) -->
+        <circle cx="360" cy="115" r="22" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+        <circle cx="360" cy="110" r="9" fill="white" opacity="0.95"/>
+        <path d="M 360 119 L 353 133 L 360 131 L 367 133 Z" fill="white" opacity="0.95"/>
+        <!-- Driver pin (mint) -->
+        <circle cx="152" cy="115" r="22" fill="rgba(0,212,170,0.25)" stroke="rgba(0,212,170,0.6)" stroke-width="2"/>
+        <circle cx="152" cy="110" r="9" fill="#00D4AA" opacity="0.95"/>
+        <path d="M 152 119 L 145 133 L 152 131 L 159 133 Z" fill="#00D4AA" opacity="0.95"/>
+        <!-- Dotted line between pins -->
+        <line x1="174" y1="115" x2="338" y2="115" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-dasharray="10 8"/>
       </svg>
     </div>
     <div class="logo-name">Trip<span>linko</span></div>
@@ -255,29 +351,62 @@
   </div>
 
   <div class="pills">
-    <div class="pill">🗺️ GPS Route Match</div>
-    <div class="pill">💺 Pick Your Seat</div>
-    <div class="pill">💬 In-App Chat</div>
-    <div class="pill">💳 Wallet & Cash</div>
-    <div class="pill">⭐ Verified Drivers</div>
-    <div class="pill">📱 Android App</div>
+    <div class="pill"><span class="pi">🗺️</span> GPS Route Match</div>
+    <div class="pill"><span class="pi">💺</span> Pick Your Seat</div>
+    <div class="pill"><span class="pi">💬</span> In-App Chat</div>
+    <div class="pill"><span class="pi">💳</span> Wallet & Cash</div>
+    <div class="pill"><span class="pi">⭐</span> Verified Drivers</div>
+    <div class="pill"><span class="pi">🔒</span> Safe & Secure</div>
   </div>
 
-  <div class="countries">
-    <span class="countries-lbl">Launching in</span>
-    <div class="flags">
-      <span class="flag" title="India">🇮🇳</span>
-      <span class="flag" title="Ghana">🇬🇭</span>
-      <span class="flag" title="Nigeria">🇳🇬</span>
-      <span class="flag" title="Kenya">🇰🇪</span>
-      <span class="flag" title="South Africa">🇿🇦</span>
-      <span class="flag" title="United Kingdom">🇬🇧</span>
+  <!-- Store badges -->
+  <div class="store-section">
+    <p class="store-label">Available on</p>
+    <div class="store-btns">
+      <!-- Google Play -->
+      <div class="store-btn">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M4 2.5L18.5 16 4 29.5V2.5Z" fill="#4FC3F7"/>
+          <path d="M4 2.5L18.5 16 23 11.5 8.5 3 4 2.5Z" fill="#81D4FA"/>
+          <path d="M4 29.5L18.5 16 23 20.5 8.5 29 4 29.5Z" fill="#29B6F6"/>
+          <path d="M23 11.5L28 14.5C29.1 15.1 29.1 16.9 28 17.5L23 20.5L18.5 16 23 11.5Z" fill="#FFD54F"/>
+        </svg>
+        <div class="store-text">
+          <span class="store-sub">Get it on</span>
+          <span class="store-name">Google Play</span>
+        </div>
+      </div>
+
+      <!-- App Store -->
+      <div class="store-btn">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M20.5 4C20.5 4 21.5 8 18 10.5C14.5 13 12 10 12 10C12 10 11 6 14.5 3.5C18 1 20.5 4 20.5 4Z" fill="white"/>
+          <path d="M7 22C5.5 19.5 5 17 5 16C5 11 8.5 7.5 12.5 7C13.5 6.9 14.5 7 15 7.5C16 8.5 17 8.5 18 7.5C18.5 7 19.5 6.9 20.5 7C24.5 7.5 28 11 28 16C28 17 27.5 19.5 26 22C24.5 24.5 23 26 21 26C20 26 19 25.5 18 25C17 24.5 16 24.5 15 25C14 25.5 13 26 12 26C10 26 8.5 24.5 7 22Z" fill="white"/>
+        </svg>
+        <div class="store-text">
+          <span class="store-sub">Download on the</span>
+          <span class="store-name">App Store</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Countries -->
+    <div class="countries-row">
+      <span class="countries-lbl">Launching in</span>
+      <div class="flags">
+        <span class="flag" title="India">🇮🇳</span>
+        <span class="flag" title="Ghana">🇬🇭</span>
+        <span class="flag" title="Nigeria">🇳🇬</span>
+        <span class="flag" title="Kenya">🇰🇪</span>
+        <span class="flag" title="South Africa">🇿🇦</span>
+        <span class="flag" title="United Kingdom">🇬🇧</span>
+      </div>
     </div>
   </div>
 
 </div>
 
-<footer>© 2025 Triplinko · triplinko.com</footer>
+<footer>© 2026 Triplinko · triplinko.com</footer>
 
 <script>
 function sub() {
