@@ -1,0 +1,94 @@
+{
+  "branding": {
+    "logoName": "Trip",
+    "logoNameAccent": "linko",
+    "pageTitle": "Triplinko — Smarter Carpooling"
+  },
+  "hero": {
+    "badge": "Launching Soon",
+    "heading": "Smarter rides,",
+    "headingAccent": "better journeys.",
+    "description": "Triplinko connects drivers and passengers for shared rides across multiple countries. Save money, meet people, travel smarter."
+  },
+  "form": {
+    "inputPlaceholder": "Your email address",
+    "buttonText": "Get Early Access →",
+    "noteText": "🔒 No spam. Launch notification only.",
+    "successMessage": "🎉 You're on the list! We'll notify you at launch."
+  },
+  "features": [
+    {
+      "icon": "🗺️",
+      "text": "GPS Route Match"
+    },
+    {
+      "icon": "💺",
+      "text": "Pick Your Seat"
+    },
+    {
+      "icon": "💬",
+      "text": "In-App Chat"
+    },
+    {
+      "icon": "💳",
+      "text": "Wallet & Cash"
+    },
+    {
+      "icon": "⭐",
+      "text": "Verified Drivers"
+    },
+    {
+      "icon": "🔒",
+      "text": "Safe & Secure"
+    }
+  ],
+  "stores": {
+    "label": "Available on",
+    "items": [
+      {
+        "name": "Google Play",
+        "subtitle": "Get it on"
+      },
+      {
+        "name": "App Store",
+        "subtitle": "Download on the"
+      }
+    ]
+  },
+  "countries": {
+    "label": "Launching in",
+    "items": [
+      {
+        "flag": "🇮🇳",
+        "name": "India"
+      },
+      {
+        "flag": "🇬🇭",
+        "name": "Ghana"
+      },
+      {
+        "flag": "🇳🇬",
+        "name": "Nigeria"
+      },
+      {
+        "flag": "🇰🇪",
+        "name": "Kenya"
+      },
+      {
+        "flag": "🇿🇦",
+        "name": "South Africa"
+      },
+      {
+        "flag": "🇬🇧",
+        "name": "United Kingdom"
+      }
+    ]
+  },
+  "footer": "© 2026 Triplinko · triplinko.com",
+  "formApi": {
+    "accessKey": "7ff64972-8321-493d-bcae-323137ffabcd",
+    "endpoint": "https://api.web3forms.com/submit",
+    "subject": "New Early Access Signup - Triplinko",
+    "fromName": "Triplinko Waitlist"
+  }
+}
