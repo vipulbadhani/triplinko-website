@@ -2674,6 +2674,8 @@
           if(window._invAfterOTP) window._invAfterOTP(verifiedPhone);
         } else if(otpTarget === 'hire') {
           if(window._hireAfterOTP) window._hireAfterOTP(verifiedPhone);
+        } else if(otpTarget === 'driver_verify') {
+          await unlockRequests();
         }
       }, 1500);
     } catch(e) {
@@ -4112,7 +4114,7 @@ ${vtype} chahiye
 
   // Share function — WhatsApp/general
   window.shareRide = function(id, type, from, to, date, time, price, seats, vehicle, vnum, driverName) {
-    const url = type === 'hire' ? 'triplinko.com?hire=' + id : 'triplinko.com?ride=' + id;
+    const url = type === 'hire' ? 'https://triplinko.com?hire=' + id : 'https://triplinko.com?ride=' + id;
     const text = `🚗 Ride Available — Triplinko!\n\n📍 ${from} → ${to}\n📅 ${date} | 🕐 ${time}\n💺 ${seats} seat | 💰 ₹${price}/seat\n🚙 ${vehicle} | ${vnum}\n👤 ${driverName}\n\n📞 Book: ${url}`;
     if(navigator.share) {
       navigator.share({ title: 'Triplinko Ride', text });
@@ -4122,7 +4124,7 @@ ${vtype} chahiye
   };
 
   window.shareRequest = function(id, type, from, to, date, seats, budgetMin, budgetMax, name) {
-    const url = type === 'hirereq' ? 'triplinko.com?hirereq=' + id : 'triplinko.com?request=' + id;
+    const url = type === 'hirereq' ? 'https://triplinko.com?hirereq=' + id : 'https://triplinko.com?request=' + id;
     const text = `🙋 Ride Request — Triplinko!\n\n📍 ${from} → ${to}\n📅 ${date} | 💺 ${seats} seat\n💰 Budget: ₹${budgetMin}${budgetMax && budgetMax !== budgetMin ? ' – ₹' + budgetMax : ''}\n👤 ${name}\n\n📞 Contact: ${url}`;
     if(navigator.share) {
       navigator.share({ title: 'Triplinko Request', text });
@@ -4375,14 +4377,47 @@ function sendChatMsg() { if(window._sendChatMsg) window._sendChatMsg(); }
   // ── fetch bookings after OTP verified ────────────────────────
   async function invFetchRidesForPhone(phone) {
     try {
-      const { collection, query, where, getDocs } =
+      const { collection, query, where, getDocs, doc, getDoc } =
         await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
       const _db = window.db;
       if(!_db) { showToast('❌ Firebase load nahi hua, page refresh karo', 'error'); return; }
-      const q = query(collection(_db, 'bookings'), where('driverPhone','==', phone));
-      const snap = await getDocs(q);
+
       invAllBookings = [];
-      snap.forEach(d => invAllBookings.push({ id: d.id, ...d.data() }));
+
+      // Source 1: ride post bookings
+      const snap1 = await getDocs(query(collection(_db, 'bookings'), where('driverPhone','==', phone)));
+      snap1.forEach(d => invAllBookings.push({ id: d.id, ...d.data() }));
+
+      // Source 2: request contacts (driver ne request wale passenger ko contact kiya)
+      const snap2 = await getDocs(query(collection(_db, 'driver_contacts'), where('phone','==', phone)));
+      const contactFetches = [];
+      snap2.forEach(dc => {
+        const c = { id: dc.id, ...dc.data() };
+        if(c.requestId && c.postType !== 'hire') {
+          contactFetches.push(
+            getDoc(doc(_db, 'ride_requests', c.requestId)).then(reqSnap => {
+              if(!reqSnap.exists()) return;
+              const req = reqSnap.data();
+              invAllBookings.push({
+                id: 'contact_' + c.id,
+                rideId: 'req_' + c.requestId,
+                passengerName:  req.passengerName  || '—',
+                passengerPhone: req.passengerPhone || '',
+                passengerEmail: req.passengerEmail || '',
+                driverName:  c.name,
+                driverPhone: c.phone,
+                from: req.from,
+                to:   req.to,
+                date: req.date,
+                time: req.time || '',
+                price: req.budgetMin || '0',
+                bookedAt: c.verifiedAt || null
+              });
+            }).catch(() => {})
+          );
+        }
+      });
+      await Promise.all(contactFetches);
 
       if(!invAllBookings.length) {
         showToast('❌ Is number pe koi booking nahi mili', 'error');
