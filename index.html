@@ -612,6 +612,7 @@
 </head>
 <body>
 
+
 <!-- TOAST -->
 <div class="toast" id="toast">
   <span class="toast-text" id="toastText"></span>
@@ -824,7 +825,7 @@
       </div>
       <div class="form-group">
         <label class="form-label" id="lbVehicle">Gaadi *</label>
-        <input class="form-input" id="rideVehicle" placeholder="eg. Bolero, Innova" onblur="validateField('rideVehicle')" />
+        <input class="form-input" id="rideVehicle" placeholder="eg. Bolero, Innova" oninput="properCaseInput(this)" onblur="validateField('rideVehicle')" />
         <span class="field-error" id="errVehicle">Gaadi ka naam zaroori hai</span>
       </div>
     </div>
@@ -1328,7 +1329,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, query, orderBy, where, serverTimestamp }
+  import { getFirestore, collection, doc, addDoc, setDoc, getDocs, query, orderBy, where, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, fetchSignInMethodsForEmail }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -1807,6 +1808,13 @@
     el.value = raw.replace(/\b\w/g, c => c.toUpperCase());
   };
 
+  // Proper case — numbers/special chars allowed (vehicle names)
+  window.properCaseInput = function(el) {
+    const pos = el.selectionStart;
+    el.value = el.value.replace(/\b\w/g, c => c.toUpperCase());
+    el.setSelectionRange(pos, pos);
+  };
+
   // Levenshtein edit distance
   function editDist(a, b) {
     const m = a.length, n = b.length;
@@ -1963,7 +1971,7 @@
                   ${r.vehicle?`<div class="detail-pill">🔧 ${r.vehicle}</div>`:''}
                   ${r.vehicleNumber?`<span class="plate-commercial" style="font-size:12px;">${fmtPlate(r.vehicleNumber)}</span>`:''}
                 </div>
-                <button onclick="shareRide('${r.from}','${r.to}','${r.date}','${r.time}','${r.price}','1','${r.vehicle||''}','${r.vehicleNumber||''}','${r.driverName}')" style="background:var(--orange);border:none;color:white;cursor:pointer;padding:6px 8px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(232,101,42,0.4)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+                <button onclick="shareRide('${r.id}','hire','${r.from}','${r.to}','${r.date}','${r.time}','${r.price}','1','${r.vehicle||''}','${r.vehicleNumber||''}','${r.driverName}')" style="background:var(--orange);border:none;color:white;cursor:pointer;padding:6px 8px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(232,101,42,0.4)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
               </div>
               <div class="ride-footer">
                 <div class="driver-info">
@@ -2012,7 +2020,7 @@
   'plate-commercial'
 }" style="font-size:12px;">${fmtPlate(r.vehicleNumber)}</span>`:''}
                 </div>
-                <button onclick="shareRide('${r.from}','${r.to}','${r.date}','${r.time}','${r.price}','${r.seats}','${r.vehicle||''}','${r.vehicleNumber||''}','${r.driverName}')" style="background:var(--orange);border:none;color:white;cursor:pointer;padding:6px 8px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(232,101,42,0.4)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+                <button onclick="shareRide('${r.id}','ride','${r.from}','${r.to}','${r.date}','${r.time}','${r.price}','${r.seats}','${r.vehicle||''}','${r.vehicleNumber||''}','${r.driverName}')" style="background:var(--orange);border:none;color:white;cursor:pointer;padding:6px 8px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(232,101,42,0.4)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
               </div>
               <div class="ride-footer">
                 <div class="driver-info">
@@ -2571,10 +2579,24 @@
             ? document.getElementById('reqEmail')?.value?.trim()
             : otpTarget==='hire'
             ? null
+            : otpTarget==='hire_response'
+            ? window._pendingHireResp?.email || ''
             : document.getElementById('passengerEmail')?.value?.trim();
+          const nameField = otpTarget==='driver'
+            ? document.getElementById('driverName')?.value?.trim()
+            : otpTarget==='driver_verify'
+            ? document.getElementById('dvName')?.value?.trim()
+            : otpTarget==='request'
+            ? document.getElementById('reqName')?.value?.trim()
+            : otpTarget==='hire'
+            ? document.getElementById('inqName')?.value?.trim()
+            : otpTarget==='hire_response'
+            ? window._pendingHireResp?.name || ''
+            : document.getElementById('passengerName')?.value?.trim();
           await addDoc(collection(db,'verified_users'), {
             phone: currentOTPPhone,
             email: emailField||'',
+            name: nameField||'',
             verifiedAt: serverTimestamp()
           });
         }
@@ -2674,6 +2696,12 @@
           if(window._invAfterOTP) window._invAfterOTP(verifiedPhone);
         } else if(otpTarget === 'hire') {
           if(window._hireAfterOTP) window._hireAfterOTP(verifiedPhone);
+        } else if(otpTarget === 'driver_verify') {
+          await unlockRequests();
+        } else if(otpTarget === 'request') {
+          await saveRequest();
+        } else if(otpTarget === 'hire_response') {
+          await saveHireResponse();
         }
       }, 1500);
     } catch(e) {
@@ -2758,16 +2786,20 @@
     const d = pendingDriverData;
     sendWelcomeEmailIfNew(d.email, d.name, 'driver');
 
+    // Pre-generate ID so Telegram link can include it
+    const rideRef = doc(collection(db, 'rides'));
+    const rideId  = rideRef.id;
+
     // Telegram pehle — Firestore result ka wait nahi
     if(d.postType === 'hire') {
       sendTelegramMsg(buildHireMsg({
-        from:d.from, to:d.to, price:d.price,
+        id:rideId, from:d.from, to:d.to, price:d.price,
         vehicle:d.vehicle, vehicleType:d.vehicleType,
         driverName:d.name
       }));
     } else {
       sendTelegramMsg(buildRideMsg({
-        from:d.from, to:d.to, date:d.date, time:d.time,
+        id:rideId, from:d.from, to:d.to, date:d.date, time:d.time,
         price:d.price, seats:d.seats, vehicle:d.vehicle,
         vehicleNumber:d.vehicleNumber, vehicleType:d.vehicleType,
         driverName:d.name
@@ -2775,7 +2807,7 @@
     }
 
     try {
-      await addDoc(collection(db,'rides'),{
+      await setDoc(rideRef, {
         driverName:d.name, driverPhone:d.phone, driverEmail:d.email||'',
         from:d.from, to:d.to, date:d.date, time:d.time,
         seats:d.seats, price:d.price,
@@ -2801,6 +2833,23 @@
     const d = pendingPassengerData;
     // Email bhejo (already-verified path ke liye bhi)
     sendWelcomeEmailIfNew(d.email, d.name, 'passenger');
+
+    // Telegram support group — booking detail
+    sendTelegramMsg(
+      `🚗 <b>New Booking — Triplinko!</b>\n\n` +
+      `━━ 🚗 <b>Ride Detail</b> ━━\n` +
+      `📍 <b>${d.from}</b> → <b>${d.to}</b>\n` +
+      `📅 ${d.date} | 🕐 ${d.time || 'N/A'}\n` +
+      `💰 ₹${d.price}/seat\n` +
+      `👤 Driver: <b>${d.driverName}</b>\n` +
+      `📞 Driver Phone: <b>${d.driverPhone}</b>\n\n` +
+      `━━ 🙋 <b>Passenger Detail</b> ━━\n` +
+      `👤 Passenger: <b>${d.name}</b>\n` +
+      `📞 Passenger Phone: <b>${d.phone}</b>\n\n` +
+      `#TriplinkoRide #PahadiSawari #Uttarakhand`,
+      TG_SUPPORT_GROUP
+    );
+
     try {
       await addDoc(collection(db,'bookings'),{
         rideId:d.rideId, from:d.from, to:d.to,
@@ -3330,10 +3379,15 @@
     const d = pendingRequestData;
     sendWelcomeEmailIfNew(d.passengerEmail, d.passengerName, 'passenger');
 
+    // Pre-generate ID so Telegram link can include it
+    const reqRef = doc(collection(db, 'ride_requests'));
+    const reqId  = reqRef.id;
+
     // Telegram pehle — Firestore result ka wait nahi
     if(d.postType === 'hire') {
       // Main public group — simple teaser
       sendTelegramMsg(buildHireRequestMsg({
+        id: reqId,
         vehicleType: d.vehicleType,
         location: d.from,
         date: d.date,
@@ -3343,6 +3397,7 @@
       }));
     } else {
       sendTelegramMsg(buildRequestMsg({
+        id: reqId,
         from:d.from, to:d.to, date:d.date,
         seats:d.seats, budgetMin:d.budgetMin, budgetMax:d.budgetMax,
         passengerName:d.passengerName
@@ -3350,7 +3405,7 @@
     }
 
     try {
-      await addDoc(collection(db,'ride_requests'), {
+      await setDoc(reqRef, {
         ...d, verified: true, createdAt: serverTimestamp()
       });
       closeRequestModalDirect();
@@ -3412,7 +3467,7 @@
                 <div class="detail-pill">📅 ${formatDate(r.date)}</div>
                 ${r.to ? `<div class="detail-pill">🔧 ${r.to}</div>` : ''}
               </div>
-              <button onclick="shareRequest('${r.from}','${r.to}','${r.date}','1','${r.budgetMin}','${r.budgetMax||r.budgetMin}','${r.passengerName}')" style="background:var(--orange);border:none;color:white;cursor:pointer;padding:6px 8px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(232,101,42,0.4)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+              <button onclick="shareRequest('${r.id}','hirereq','${r.from}','${r.to}','${r.date}','1','${r.budgetMin}','${r.budgetMax||r.budgetMin}','${r.passengerName}')" style="background:var(--orange);border:none;color:white;cursor:pointer;padding:6px 8px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(232,101,42,0.4)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
             </div>
             <div class="ride-footer">
               <div class="driver-info">
@@ -3451,7 +3506,7 @@
                 <div class="detail-pill">📅 ${formatDate(r.date)}</div>
                 <div class="detail-pill">👥 ${r.seats} seat</div>
               </div>
-              <button onclick="shareRequest('${r.from}','${r.to}','${r.date}','${r.seats}','${r.budgetMin}','${r.budgetMax||r.budgetMin}','${r.passengerName}')" style="background:var(--orange);border:none;color:white;cursor:pointer;padding:6px 8px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(232,101,42,0.4)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+              <button onclick="shareRequest('${r.id}','ride','${r.from}','${r.to}','${r.date}','${r.seats}','${r.budgetMin}','${r.budgetMax||r.budgetMin}','${r.passengerName}')" style="background:var(--orange);border:none;color:white;cursor:pointer;padding:6px 8px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(232,101,42,0.4)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
             </div>
             <div class="ride-footer">
               <div class="driver-info">
@@ -3461,7 +3516,7 @@
                   <div class="driver-sub">🙋 Passenger</div>
                 </div>
               </div>
-              <button class="book-btn" onclick="handleContactPassenger('${r.passengerPhone}','${r.passengerName}')">${T[lang].contactPassBtn}</button>
+              <button class="book-btn" onclick="handleContactPassenger('${r.passengerPhone}','${r.passengerName}','${r.id}')">${T[lang].contactPassBtn}</button>
             </div>
           </div>
         </div>`).join('');
@@ -3552,9 +3607,33 @@
     if(!valid) return;
 
     const btn = document.getElementById('hireRespSubmitBtn');
-    btn.disabled = true; btn.textContent = '⏳ Saving...';
+    btn.disabled = true; btn.textContent = '⏳ Check ho raha hai...';
 
-    // Telegram support group — full detail
+    // Pending data store karo
+    window._pendingHireResp = { d, vnum, name, phone, email, marketing };
+
+    try {
+      const alreadyVerified = await isPhoneVerified(phone);
+      if(alreadyVerified) {
+        showToast('✅ Welcome back!', 'success');
+        setTimeout(() => { saveHireResponse(); }, 800);
+      } else {
+        otpTarget = 'hire_response';
+        const sent = await sendOTP(phone);
+        if(sent) showOTPModal(phone, 'hire_response');
+        else { btn.disabled = false; btn.textContent = '📞 Submit & Call Karo'; }
+      }
+    } catch(e) {
+      console.error(e);
+      showToast('❌ Error hua, dobara try karo.', 'error');
+      btn.disabled = false; btn.textContent = '📞 Submit & Call Karo';
+    }
+  };
+
+  async function saveHireResponse() {
+    const { d, vnum, name, phone, email, marketing } = window._pendingHireResp || {};
+    if(!d) return;
+    sendWelcomeEmailIfNew(email, name, 'driver');
     sendTelegramMsg(
       `🚜 <b>Hire Response — Triplinko!</b>\n\n` +
       `━━ 🙋 <b>Request Detail</b> ━━\n` +
@@ -3572,7 +3651,6 @@
       `#TriplinkoHire #PahadiSawari #Uttarakhand`,
       TG_SUPPORT_GROUP
     );
-
     try {
       await addDoc(collection(db,'driver_contacts'), {
         postType: 'hire',
@@ -3588,20 +3666,21 @@
         contactedAt: serverTimestamp()
       });
     } catch(e) { console.error('hire response save error:', e); }
-
+    window._pendingHireResp = null;
     closeHireRespDirect();
     setTimeout(() => {
       window.location.href = 'tel:+91' + d.passengerPhone;
     }, 500);
   };
 
-  window.handleContactPassenger = function(phone, name) {
+  window.handleContactPassenger = function(phone, name, requestId) {
     if(window.driverVerified) {
       window.location.href = 'tel:' + phone;
     } else {
       // Save pending contact
-      window._pendingContactPhone = phone;
-      window._pendingContactName  = name;
+      window._pendingContactPhone   = phone;
+      window._pendingContactName    = name;
+      window._pendingContactReqId   = requestId || null;
       // Show driver verify modal
       document.getElementById('driverVerifyOverlay').classList.add('active');
       document.getElementById('driverVerifyOverlay').classList.add('active');
@@ -3643,7 +3722,8 @@
       vehicle: v('dvVehicle'),
       vehicleType: v('dvVtype'),
       vehicleNumber: v('dvVnum'),
-      marketingConsent: document.getElementById('dvMarketing').checked
+      marketingConsent: document.getElementById('dvMarketing').checked,
+      requestId: window._pendingContactReqId || null
     };
 
     const btn = document.getElementById('dvSubmitBtn');
@@ -3669,6 +3749,34 @@
   async function unlockRequests() {
     if(!pendingDriverVerifyData) return;
     const d = pendingDriverVerifyData;
+
+    // Telegram support group — fetch request detail pehle taaki full message ban sake
+    if(d.requestId) {
+      try {
+        const { doc: fsDoc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+        const snap = await getDoc(fsDoc(db, 'ride_requests', d.requestId));
+        if(snap.exists()) {
+          const req = snap.data();
+          sendTelegramMsg(
+            `🚗 <b>Ride Request Contact — Triplinko!</b>\n\n` +
+            `━━ 🙋 <b>Request Detail</b> ━━\n` +
+            `📍 <b>${req.from}</b> → <b>${req.to}</b>\n` +
+            `📅 ${req.date} | 💺 ${req.seats} seat\n` +
+            (req.budgetMin ? `💰 Budget: ₹${req.budgetMin}${req.budgetMax && req.budgetMax !== req.budgetMin ? ' – ₹' + req.budgetMax : ''}\n` : '') +
+            `👤 Passenger: <b>${req.passengerName}</b>\n` +
+            `📞 Passenger Phone: <b>${req.passengerPhone}</b>\n\n` +
+            `━━ 🚗 <b>Driver Detail</b> ━━\n` +
+            `👤 Driver: <b>${d.name}</b>\n` +
+            `📞 Driver Phone: <b>${d.phone}</b>\n` +
+            `🚗 Vehicle: ${d.vehicle || 'N/A'}\n` +
+            `🔑 Plate: ${d.vehicleNumber || 'N/A'}\n\n` +
+            `#TriplinkoRide #PahadiSawari #Uttarakhand`,
+            TG_SUPPORT_GROUP
+          );
+        }
+      } catch(e) { console.error('Telegram ride contact error:', e); }
+    }
+
     // Save driver contact in Firestore
     try {
       await addDoc(collection(db,'driver_contacts'), {
@@ -3684,8 +3792,9 @@
     if(window._pendingContactPhone) {
       setTimeout(() => {
         window.location.href = 'tel:' + window._pendingContactPhone;
-        window._pendingContactPhone = null;
-        window._pendingContactName  = null;
+        window._pendingContactPhone  = null;
+        window._pendingContactName   = null;
+        window._pendingContactReqId  = null;
       }, 500);
     } else {
       loadRequests();
@@ -4005,7 +4114,8 @@
 🚙 ${r.vehicle} | ${plate} ${r.vehicleNumber || ''}
 👤 Driver: ${r.driverName}
 
-📞 Book karo: <a href="https://triplinko.com">triplinko.com</a>
+📞 Book karo: <a href="https://triplinko.com?ride=${r.id}">triplinko.com?ride=${r.id}</a>
+
 #TriplinkoRide #PahadiSawari #Uttarakhand`;
   }
 
@@ -4017,7 +4127,8 @@
 💰 Budget: ₹${r.budgetMin}${r.budgetMax && r.budgetMax !== r.budgetMin ? ' – ₹' + r.budgetMax : ''}
 👤 Passenger: ${r.passengerName}
 
-📞 Contact karo: <a href="https://triplinko.com">triplinko.com</a>
+📞 Contact karo: <a href="https://triplinko.com?request=${r.id}">triplinko.com?request=${r.id}</a>
+
 #TriplinkoRequest #PahadiSawari #Uttarakhand`;
   }
 
@@ -4031,7 +4142,8 @@ ${vtype} ${r.vehicle ? '| ' + r.vehicle : ''}
 💰 ₹${r.price}/day
 👤 Owner: ${r.driverName}
 
-📞 Hire karo: <a href="https://triplinko.in">triplinko.in</a>
+📞 Hire karo: <a href="https://triplinko.com?hire=${r.id}">triplinko.com?hire=${r.id}</a>
+
 #TriplinkoHire #JCBHire #PahadiSawari #Uttarakhand`;
   }
 
@@ -4065,13 +4177,15 @@ ${vtype} chahiye
 📍 Location: <b>${r.location}</b>
 📅 Date: ${r.date || 'N/A'}${r.work ? '\n🔧 Kaam: ' + r.work : ''}${r.budgetMin ? '\n💰 Budget: ₹' + r.budgetMin + (r.budgetMax && r.budgetMax !== r.budgetMin ? ' – ₹' + r.budgetMax : '') + '/day' : ''}
 
-👉 Detail dekho: <a href="https://www.triplinko.com">www.triplinko.com</a>
+👉 Detail dekho: <a href="https://triplinko.com?hirereq=${r.id}">triplinko.com?hirereq=${r.id}</a>
+
 #TriplinkoHire #PahadiSawari #Uttarakhand`;
   }
 
   // Share function — WhatsApp/general
-  window.shareRide = function(from, to, date, time, price, seats, vehicle, vnum, driverName) {
-    const text = `🚗 Ride Available — Triplinko!\n\n📍 ${from} → ${to}\n📅 ${date} | 🕐 ${time}\n💺 ${seats} seat | 💰 ₹${price}/seat\n🚙 ${vehicle} | ${vnum}\n👤 ${driverName}\n\n📞 Book: triplinko.com`;
+  window.shareRide = function(id, type, from, to, date, time, price, seats, vehicle, vnum, driverName) {
+    const url = type === 'hire' ? 'https://triplinko.com?hire=' + id : 'https://triplinko.com?ride=' + id;
+    const text = `🚗 Ride Available — Triplinko!\n\n📍 ${from} → ${to}\n📅 ${date} | 🕐 ${time}\n💺 ${seats} seat | 💰 ₹${price}/seat\n🚙 ${vehicle} | ${vnum}\n👤 ${driverName}\n\n📞 Book: ${url}`;
     if(navigator.share) {
       navigator.share({ title: 'Triplinko Ride', text });
     } else {
@@ -4079,8 +4193,9 @@ ${vtype} chahiye
     }
   };
 
-  window.shareRequest = function(from, to, date, seats, budgetMin, budgetMax, name) {
-    const text = `🙋 Ride Request — Triplinko!\n\n📍 ${from} → ${to}\n📅 ${date} | 💺 ${seats} seat\n💰 Budget: ₹${budgetMin}${budgetMax && budgetMax !== budgetMin ? ' – ₹' + budgetMax : ''}\n👤 ${name}\n\n📞 Contact: triplinko.com`;
+  window.shareRequest = function(id, type, from, to, date, seats, budgetMin, budgetMax, name) {
+    const url = type === 'hirereq' ? 'https://triplinko.com?hirereq=' + id : 'https://triplinko.com?request=' + id;
+    const text = `🙋 Ride Request — Triplinko!\n\n📍 ${from} → ${to}\n📅 ${date} | 💺 ${seats} seat\n💰 Budget: ₹${budgetMin}${budgetMax && budgetMax !== budgetMin ? ' – ₹' + budgetMax : ''}\n👤 ${name}\n\n📞 Contact: ${url}`;
     if(navigator.share) {
       navigator.share({ title: 'Triplinko Request', text });
     } else {
@@ -4148,6 +4263,62 @@ ${vtype} chahiye
     } catch(e) {
       console.error('Email verify error:', e);
       showToast('❌ Kuch error hua. Dobara try karo.', 'error');
+    }
+  })();
+
+  // ─── DEEP LINK HANDLER ───────────────────────────────────────
+  (async function checkDeepLink() {
+    const params    = new URLSearchParams(window.location.search);
+    const rideId    = params.get('ride');
+    const hireId    = params.get('hire');
+    const reqId     = params.get('request');
+    const hirereqId = params.get('hirereq');
+    if(!rideId && !hireId && !reqId && !hirereqId) return;
+
+    const { doc: fsDoc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+
+    if(rideId) {
+      try {
+        const snap = await getDoc(fsDoc(db, 'rides', rideId));
+        if(snap.exists()) {
+          const r = snap.data();
+          window.history.replaceState({}, document.title, window.location.pathname);
+          setTimeout(() => openBooking(rideId, r.from, r.to, r.date, r.time, r.price, r.driverPhone, r.driverName, r.vehicleType || 'commercial'), 500);
+        }
+      } catch(e) { console.error('Deep link ride error:', e); }
+    }
+
+    if(hireId) {
+      try {
+        const snap = await getDoc(fsDoc(db, 'rides', hireId));
+        if(snap.exists()) {
+          const r = snap.data();
+          window.history.replaceState({}, document.title, window.location.pathname);
+          setTimeout(() => openHireInquiry(hireId, r.driverPhone, r.driverName, r.vehicleType, r.from, r.to || '', r.price || '', r.vehicleNumber || ''), 500);
+        }
+      } catch(e) { console.error('Deep link hire error:', e); }
+    }
+
+    if(reqId) {
+      try {
+        const snap = await getDoc(fsDoc(db, 'ride_requests', reqId));
+        if(snap.exists()) {
+          const r = snap.data();
+          window.history.replaceState({}, document.title, window.location.pathname);
+          setTimeout(() => handleContactPassenger(r.passengerPhone, r.passengerName, reqId), 500);
+        }
+      } catch(e) { console.error('Deep link request error:', e); }
+    }
+
+    if(hirereqId) {
+      try {
+        const snap = await getDoc(fsDoc(db, 'ride_requests', hirereqId));
+        if(snap.exists()) {
+          const r = snap.data();
+          window.history.replaceState({}, document.title, window.location.pathname);
+          setTimeout(() => openHireResponse(hirereqId, r.passengerPhone, r.passengerName, r.vehicleType, r.from || '', r.date || '', r.to || '', r.budgetMin || '', r.budgetMax || ''), 500);
+        }
+      } catch(e) { console.error('Deep link hirereq error:', e); }
     }
   })();
 
@@ -4276,14 +4447,47 @@ function sendChatMsg() { if(window._sendChatMsg) window._sendChatMsg(); }
   // ── fetch bookings after OTP verified ────────────────────────
   async function invFetchRidesForPhone(phone) {
     try {
-      const { collection, query, where, getDocs } =
+      const { collection, query, where, getDocs, doc, getDoc } =
         await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
       const _db = window.db;
       if(!_db) { showToast('❌ Firebase load nahi hua, page refresh karo', 'error'); return; }
-      const q = query(collection(_db, 'bookings'), where('driverPhone','==', phone));
-      const snap = await getDocs(q);
+
       invAllBookings = [];
-      snap.forEach(d => invAllBookings.push({ id: d.id, ...d.data() }));
+
+      // Source 1: ride post bookings
+      const snap1 = await getDocs(query(collection(_db, 'bookings'), where('driverPhone','==', phone)));
+      snap1.forEach(d => invAllBookings.push({ id: d.id, ...d.data() }));
+
+      // Source 2: request contacts (driver ne request wale passenger ko contact kiya)
+      const snap2 = await getDocs(query(collection(_db, 'driver_contacts'), where('phone','==', phone)));
+      const contactFetches = [];
+      snap2.forEach(dc => {
+        const c = { id: dc.id, ...dc.data() };
+        if(c.requestId && c.postType !== 'hire') {
+          contactFetches.push(
+            getDoc(doc(_db, 'ride_requests', c.requestId)).then(reqSnap => {
+              if(!reqSnap.exists()) return;
+              const req = reqSnap.data();
+              invAllBookings.push({
+                id: 'contact_' + c.id,
+                rideId: 'req_' + c.requestId,
+                passengerName:  req.passengerName  || '—',
+                passengerPhone: req.passengerPhone || '',
+                passengerEmail: req.passengerEmail || '',
+                driverName:  c.name,
+                driverPhone: c.phone,
+                from: req.from,
+                to:   req.to,
+                date: req.date,
+                time: req.time || '',
+                price: req.budgetMin || '0',
+                bookedAt: c.verifiedAt || null
+              });
+            }).catch(() => {})
+          );
+        }
+      });
+      await Promise.all(contactFetches);
 
       if(!invAllBookings.length) {
         showToast('❌ Is number pe koi booking nahi mili', 'error');
