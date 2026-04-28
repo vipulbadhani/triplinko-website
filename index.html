@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="hi">
 <head>
   <meta charset="UTF-8" />
@@ -158,6 +158,13 @@
     .pt-btn { flex:1; padding:9px 10px; border-radius:10px; border:1.5px solid var(--cream-dark); background:var(--cream); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:#6b6b6b; cursor:pointer; transition:all 0.2s; }
     .pt-btn.pt-active { background:var(--green); color:#fff; border-color:var(--green); }
     .tf-chip { padding:5px 14px; border-radius:20px; border:1.5px solid var(--cream-dark); background:var(--cream); font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; color:#6b6b6b; cursor:pointer; }
+    .tslot-chip { display:flex; flex-direction:column; align-items:center; gap:2px; padding:8px 12px; border-radius:12px; border:1.5px solid var(--cream-dark); background:var(--cream); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--text); cursor:pointer; flex:1; min-width:0; transition:all 0.18s; line-height:1.2; white-space:nowrap; }
+    .tslot-chip .tslot-range { font-size:10px; font-weight:400; color:var(--text-muted); }
+    .tslot-chip.tslot-active { background:var(--green); color:#fff; border-color:var(--green); }
+    .tslot-chip.tslot-active .tslot-range { color:rgba(255,255,255,0.75); }
+    body.dark-mode .tslot-chip { background:#1a1a2e; border-color:#2a2a3e; color:#e8e8f0; }
+    body.dark-mode .tslot-chip .tslot-range { color:#7777aa; }
+    body.dark-mode .tslot-chip.tslot-active { background:var(--green); border-color:var(--green); color:#fff; }
     .tf-chip.tf-active { background:var(--green); color:#fff; border-color:var(--green); }
 
     @media (max-width:480px) {
@@ -327,6 +334,16 @@
     .form-input,.form-select { width:100%; border:1.5px solid var(--cream-dark); border-radius:10px; padding:10px 12px; font-family:'DM Sans',sans-serif; font-size:14px; background:var(--cream); outline:none; transition:border 0.2s; }
     .form-input:focus,.form-select:focus { border-color:var(--green-light); }
     .form-input.invalid { border-color:#f44336; background:#fff5f5; }
+    .time-picker-wrap { display:flex; align-items:center; gap:6px; border:1.5px solid var(--cream-dark); border-radius:10px; padding:0 14px; background:var(--cream); transition:border 0.2s; height:44px; }
+    .time-picker-wrap:focus-within { border-color:var(--green-light); }
+    .time-sel { border:none; background:transparent; outline:none; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; color:var(--text); cursor:pointer; padding:4px 2px; flex:1; }
+    .time-colon { font-size:18px; font-weight:700; color:var(--text-muted); flex-shrink:0; }
+    .time-divider { width:1px; height:22px; background:var(--cream-dark); flex-shrink:0; }
+    .time-ampm { flex:0 0 auto; font-weight:700; color:var(--green); }
+    body.dark-mode .time-picker-wrap { background:#1a1a2e; border-color:#2a2a3e; }
+    body.dark-mode .time-sel { color:#e8e8f0; }
+    body.dark-mode .time-divider { background:#3a3a5e; }
+    body.dark-mode .time-ampm { color:var(--orange); }
     .field-error { color:#e53935; font-size:12px; margin-top:4px; display:none; }
     .field-ok { color:#2e7d32; font-size:12px; margin-top:4px; display:none; }
     .form-row { display:flex; gap:12px; }
@@ -680,11 +697,14 @@
         <input class="search-input" id="filterDate" type="date" style="padding:8px 10px;font-size:13px;width:100%;box-sizing:border-box;" />
       </div>
       <div id="filterTimeBetweenLabel" style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:6px;letter-spacing:0.5px;">TIME BETWEEN</div>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <input class="search-input" id="filterTimeFrom" type="time" style="padding:8px 10px;font-size:13px;flex:1;" />
-        <span style="color:var(--text-muted);font-size:13px;white-space:nowrap;">to</span>
-        <input class="search-input" id="filterTimeTo" type="time" style="padding:8px 10px;font-size:13px;flex:1;" />
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="selectTimeSlot('morning')"   id="tslot-morning"   class="tslot-chip"><span id="tslot-morning-lbl">🌅 Subah</span><span class="tslot-range">5:00–12:00</span></button>
+        <button onclick="selectTimeSlot('afternoon')" id="tslot-afternoon" class="tslot-chip"><span id="tslot-afternoon-lbl">☀️ Dopahar</span><span class="tslot-range">12:00–17:00</span></button>
+        <button onclick="selectTimeSlot('evening')"   id="tslot-evening"   class="tslot-chip"><span id="tslot-evening-lbl">🌆 Shaam</span><span class="tslot-range">17:00–20:00</span></button>
+        <button onclick="selectTimeSlot('night')"     id="tslot-night"     class="tslot-chip"><span id="tslot-night-lbl">🌙 Raat</span><span class="tslot-range">20:00–24:00</span></button>
       </div>
+      <input type="hidden" id="filterTimeFrom" />
+      <input type="hidden" id="filterTimeTo" />
       <button onclick="clearDateFilter()" style="margin-top:12px;background:none;border:none;color:var(--orange);font-size:13px;cursor:pointer;text-decoration:underline;font-family:DM Sans,sans-serif;"><span id="clearDateBtn">✕ Filter hatao</span></button>
     </div>
   </div>
@@ -787,15 +807,33 @@
         <span class="field-error" id="errTo">Zaroori hai</span>
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label" id="lbDate">Date *</label>
-        <input class="form-input" id="rideDate" type="date" />
+    <div class="form-group">
+      <label class="form-label" id="lbDate">Date *</label>
+      <input class="form-input" id="rideDate" type="date" />
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="lbTime">Time *</label>
+      <div class="time-picker-wrap">
+        <span style="font-size:15px;flex-shrink:0;">🕐</span>
+        <select class="time-sel" id="rideTimeHr" onchange="syncRideTime()">
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        </select>
+        <span class="time-colon">:</span>
+        <select class="time-sel" id="rideTimeMin" onchange="syncRideTime()">
+          <option value="00">00</option><option value="05">05</option><option value="10">10</option>
+          <option value="15">15</option><option value="20">20</option><option value="25">25</option>
+          <option value="30">30</option><option value="35">35</option><option value="40">40</option>
+          <option value="45">45</option><option value="50">50</option><option value="55">55</option>
+        </select>
+        <span class="time-divider"></span>
+        <select class="time-sel time-ampm" id="rideTimeAmPm" onchange="syncRideTime()">
+          <option value="AM">AM</option><option value="PM">PM</option>
+        </select>
       </div>
-      <div class="form-group">
-        <label class="form-label" id="lbTime">Time *</label>
-        <input class="form-input" id="rideTime" type="time" />
-      </div>
+      <input type="hidden" id="rideTime" />
     </div>
     <div class="form-row">
       <div class="form-group">
@@ -1549,6 +1587,13 @@
     localStorage.setItem('triplinko_theme', isDark ? 'dark' : 'light');
   };
 
+  const TIME_SLOTS = {
+    morning:   { from:'05:00', to:'12:00', labelHi:'🌅 Subah',   labelEn:'🌅 Morning',   range:'5–12' },
+    afternoon: { from:'12:00', to:'17:00', labelHi:'☀️ Dopahar', labelEn:'☀️ Afternoon', range:'12–17' },
+    evening:   { from:'17:00', to:'20:00', labelHi:'🌆 Shaam',   labelEn:'🌆 Evening',   range:'17–20' },
+    night:     { from:'20:00', to:'23:59', labelHi:'🌙 Raat',    labelEn:'🌙 Night',     range:'20–24' },
+  };
+
   // Load saved theme
   if(localStorage.getItem('triplinko_theme') === 'dark') {
     document.body.classList.add('dark-mode');
@@ -1576,6 +1621,10 @@
     if(s('clearDateBtn')) s('clearDateBtn').textContent = t.clearDateBtn;
     if(s('filterDateLabel')) s('filterDateLabel').textContent = t.filterDateLbl;
     if(s('filterTimeBetweenLabel')) s('filterTimeBetweenLabel').textContent = t.timeBetweenLbl;
+    Object.keys(TIME_SLOTS).forEach(k => {
+      const el = s('tslot-' + k + '-lbl');
+      if(el) el.textContent = lang === 'hi' ? TIME_SLOTS[k].labelHi : TIME_SLOTS[k].labelEn;
+    });
     // Post type toggle buttons
     if(s('ptRide')) s('ptRide').textContent = t.ptRideBtn;
     if(s('ptHire')) s('ptHire').textContent = t.ptHireBtn;
@@ -2050,10 +2099,31 @@
     arrow.textContent = open ? '▲' : '▼';
   };
 
+  let activeTimeSlot = null;
+
+  window.selectTimeSlot = function(slot) {
+    if(activeTimeSlot === slot) {
+      // deselect on second tap
+      activeTimeSlot = null;
+      document.getElementById('filterTimeFrom').value = '';
+      document.getElementById('filterTimeTo').value   = '';
+      document.querySelectorAll('.tslot-chip').forEach(c => c.classList.remove('tslot-active'));
+      return;
+    }
+    activeTimeSlot = slot;
+    const s = TIME_SLOTS[slot];
+    document.getElementById('filterTimeFrom').value = s.from;
+    document.getElementById('filterTimeTo').value   = s.to;
+    document.querySelectorAll('.tslot-chip').forEach(c => c.classList.remove('tslot-active'));
+    document.getElementById('tslot-' + slot).classList.add('tslot-active');
+  };
+
   window.clearDateFilter = function() {
-    ['filterDate','filterTimeFrom','filterTimeTo'].forEach(id=>{
-      document.getElementById(id).value='';
-    });
+    document.getElementById('filterDate').value      = '';
+    document.getElementById('filterTimeFrom').value  = '';
+    document.getElementById('filterTimeTo').value    = '';
+    activeTimeSlot = null;
+    document.querySelectorAll('.tslot-chip').forEach(c => c.classList.remove('tslot-active'));
     document.getElementById('dateFilterLabel').textContent = T[lang].anyDay;
     document.getElementById('dateFilterPanel').style.display = 'none';
     document.getElementById('dateFilterArrow').textContent = '▼';
@@ -2075,7 +2145,11 @@
     // Update label
     if(date || timeFrom || timeTo) {
       let label = date || '';
-      if(timeFrom || timeTo) label += (label ? ' ' : '') + (timeFrom||'...') + ' → ' + (timeTo||'...');
+      if(activeTimeSlot) {
+        const sl = TIME_SLOTS[activeTimeSlot];
+        const slotName = lang === 'hi' ? sl.labelHi : sl.labelEn;
+        label += (label ? ' · ' : '') + slotName;
+      }
       document.getElementById('dateFilterLabel').textContent = '📅 ' + label;
     }
 
@@ -2458,13 +2532,28 @@
     }
   };
 
+  window.syncRideTime = function() {
+    let h = parseInt(document.getElementById('rideTimeHr').value);
+    const m  = document.getElementById('rideTimeMin').value;
+    const ap = document.getElementById('rideTimeAmPm').value;
+    if(ap === 'PM' && h !== 12) h += 12;
+    if(ap === 'AM' && h === 12) h = 0;
+    document.getElementById('rideTime').value = String(h).padStart(2,'0') + ':' + m;
+  };
+
   window.openModal = ()=>{
     document.getElementById('modalOverlay').classList.add('active');
     const now = new Date();
     document.getElementById('rideDate').value = now.toISOString().split('T')[0];
-    const hh = String(now.getHours()).padStart(2,'0');
-    const mm = String(now.getMinutes()).padStart(2,'0');
-    document.getElementById('rideTime').value = hh + ':' + mm;
+    const h24 = now.getHours();
+    const rawMin = now.getMinutes();
+    const roundedMin = String(Math.min(55, Math.round(rawMin / 5) * 5)).padStart(2,'0');
+    const ampm = h24 >= 12 ? 'PM' : 'AM';
+    const h12 = h24 % 12 || 12;
+    document.getElementById('rideTimeHr').value   = h12;
+    document.getElementById('rideTimeMin').value  = roundedMin;
+    document.getElementById('rideTimeAmPm').value = ampm;
+    syncRideTime();
     // Reset vehicle type to blank
     const vt = document.getElementById('vehicleType');
     if(vt) {
@@ -2698,6 +2787,10 @@
           if(window._hireAfterOTP) window._hireAfterOTP(verifiedPhone);
         } else if(otpTarget === 'driver_verify') {
           await unlockRequests();
+        } else if(otpTarget === 'request') {
+          await saveRequest();
+        } else if(otpTarget === 'hire_response') {
+          await saveHireResponse();
         }
       }, 1500);
     } catch(e) {
@@ -2815,6 +2908,7 @@
       closeModalDirect();
       showToast(T[lang].toastSuccess, 'success');
       ['driverName','driverPhone','rideFrom','rideTo','rideTime','ridePrice','rideVehicle'].forEach(id=>document.getElementById(id).value='');
+      ['rideTimeHr','rideTimeMin','rideTimeAmPm'].forEach(id=>{ const el=document.getElementById(id); if(el) el.selectedIndex=0; });
       pendingDriverData = null;
       window.loadRides();
     } catch(e) {
@@ -4111,6 +4205,7 @@
 👤 Driver: ${r.driverName}
 
 📞 Book karo: <a href="https://triplinko.com?ride=${r.id}">triplinko.com?ride=${r.id}</a>
+
 #TriplinkoRide #PahadiSawari #Uttarakhand`;
   }
 
@@ -4123,6 +4218,7 @@
 👤 Passenger: ${r.passengerName}
 
 📞 Contact karo: <a href="https://triplinko.com?request=${r.id}">triplinko.com?request=${r.id}</a>
+
 #TriplinkoRequest #PahadiSawari #Uttarakhand`;
   }
 
@@ -4137,6 +4233,7 @@ ${vtype} ${r.vehicle ? '| ' + r.vehicle : ''}
 👤 Owner: ${r.driverName}
 
 📞 Hire karo: <a href="https://triplinko.com?hire=${r.id}">triplinko.com?hire=${r.id}</a>
+
 #TriplinkoHire #JCBHire #PahadiSawari #Uttarakhand`;
   }
 
@@ -4171,6 +4268,7 @@ ${vtype} chahiye
 📅 Date: ${r.date || 'N/A'}${r.work ? '\n🔧 Kaam: ' + r.work : ''}${r.budgetMin ? '\n💰 Budget: ₹' + r.budgetMin + (r.budgetMax && r.budgetMax !== r.budgetMin ? ' – ₹' + r.budgetMax : '') + '/day' : ''}
 
 👉 Detail dekho: <a href="https://triplinko.com?hirereq=${r.id}">triplinko.com?hirereq=${r.id}</a>
+
 #TriplinkoHire #PahadiSawari #Uttarakhand`;
   }
 
@@ -4704,3 +4802,4 @@ function sendChatMsg() { if(window._sendChatMsg) window._sendChatMsg(); }
 </script>
 </body>
 </html>
+ 
